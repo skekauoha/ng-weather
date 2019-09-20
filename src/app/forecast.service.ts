@@ -1,14 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject, of, throwError } from "rxjs";
 import {
   tap,
   map,
   distinctUntilChanged,
-  debounce,
   debounceTime,
-  throttleTime,
-  switchMap
+  switchMap,
+  catchError
 } from "rxjs/operators";
 import { API_KEYS } from "./forecast.config";
 import { convertLocationName } from "./utils/utils";
@@ -21,6 +20,8 @@ export class ForecastService {
   forecastSubject = new BehaviorSubject([]);
   forecast$: Observable<any> = this.forecastSubject.asObservable();
 
+  forecastError$: Observable<any>;
+
   constructor(private http: HttpClient) {}
 
   retrieveForecast(location: string): Observable<any> {
@@ -28,8 +29,15 @@ export class ForecastService {
     const forecastRequest$ = this.http.get(requestUrl);
 
     forecastRequest$
-      .pipe(tap(console.log))
-      .subscribe(forecast => this.forecastSubject.next(forecast));
+      .pipe(
+        catchError(err => {
+          return throwError({ err: err.error.message });
+        })
+      )
+      .subscribe(
+        (forecast: any) => this.forecastSubject.next(forecast),
+        err => this.forecastSubject.next(err)
+      );
 
     return this.forecast$;
   }
