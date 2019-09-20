@@ -1,0 +1,6 @@
+<div *ngIf="forecast$ | async as forecast else noForecast">
+  {{ forecast.name }}
+</div>
+<ng-template #noForecast>Forecast not available</ng-template>
+
+<search-forecast></search-forecast>
