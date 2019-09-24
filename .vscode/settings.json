@@ -1,4 +1,5 @@
 {
+  "typescriptHero.imports.insertSpaceBeforeAndAfterImportBraces": false,
   "prettier.stylelintIntegration": true,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": true
 }

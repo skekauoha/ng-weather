@@ -5,12 +5,14 @@ import { Observable, fromEvent } from "rxjs";
 @Component({
   selector: "search-forecast",
   template: `
-    <input placeholder="Search by city" type="text" #searchInput />
+    <mat-form-field>
+      <input matInput placeholder="Search by city" type="text" #searchInput />
+    </mat-form-field>
   `,
   styleUrls: ["./search-forecast.component.scss"]
 })
 export class SearchForecastComponent implements OnInit {
-  @ViewChild("searchInput") location: ElementRef;
+  @ViewChild("searchInput", { static: true }) location: ElementRef;
   location$: Observable<KeyboardEvent>;
 
   constructor(private forecastService: ForecastService) {}

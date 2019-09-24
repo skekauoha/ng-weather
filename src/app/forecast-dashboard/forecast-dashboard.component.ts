@@ -9,6 +9,7 @@ import { Component, OnInit, Input } from "@angular/core";
       <div *ngIf="forecast.main">Temp: {{ forecast.main.temp }}</div>
     </div>
     <ng-template #error>{{ forecast.err }}</ng-template>
+    <unit-toggle></unit-toggle>
   `,
   styleUrls: ["./forecast-dashboard.component.scss"]
 })
