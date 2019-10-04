@@ -17,9 +17,10 @@ import { Location } from "./models/location.model";
   providedIn: "root"
 })
 export class ForecastService {
-  forecastSubject = new BehaviorSubject([]);
-  forecast$: Observable<any> = this.forecastSubject.asObservable();
+  forecast$ = new BehaviorSubject([]);
+  getForecast$: Observable<any> = this.forecast$.asObservable();
   forecastError$: Observable<any>;
+  isMetric = false;
 
   constructor(private http: HttpClient) {}
 
@@ -27,6 +28,7 @@ export class ForecastService {
     location: string,
     isMetric: boolean = false
   ): Observable<any> {
+    this.isMetric = isMetric;
     const unitOfMeasurement = isMetric ? "metric" : "imperial";
     const requestUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEYS.SECRET_KEY}&units=${unitOfMeasurement}`;
     const forecastRequest$ = this.http.get(requestUrl);
@@ -34,11 +36,11 @@ export class ForecastService {
     forecastRequest$
       .pipe(catchError(err => throwError({ err: err.error.message })))
       .subscribe(
-        (forecast: any) => this.forecastSubject.next(forecast),
-        err => this.forecastSubject.next(err)
+        (forecast: any) => this.forecast$.next(forecast),
+        err => this.forecast$.next(err)
       );
 
-    return this.forecast$;
+    return this.getForecast$;
   }
 
   selectCurrentForecast(location: Location): Observable<any> {

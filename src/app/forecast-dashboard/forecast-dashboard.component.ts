@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from "@angular/core";
     <div>Dashboard</div>
     <div *ngIf="!forecast.err; else error">
       <div>City: {{ forecast.name }}</div>
-      <div *ngIf="forecast.main">Temp: {{ forecast.main.temp }}</div>
+      <div *ngIf="forecast.main">Temp: {{ forecast.main.temp }}°</div>
     </div>
     <ng-template #error>{{ forecast.err }}</ng-template>
     <unit-toggle></unit-toggle>
@@ -19,3 +19,6 @@ export class ForecastDashboardComponent implements OnInit {
 
   ngOnInit() {}
 }
+
+// also get 5 day forecast for the city that has been searched
+// maybe show a graph of temperatures throughout the week

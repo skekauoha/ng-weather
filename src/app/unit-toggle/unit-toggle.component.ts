@@ -5,7 +5,7 @@ import { Forecast } from "../models/forecast.model";
 @Component({
   selector: "unit-toggle",
   template: `
-    <mat-slide-toggle (change)="onToggleMetric($event)"
+    <mat-slide-toggle color="warn" (change)="onToggleMetric($event)"
       >Metric Units</mat-slide-toggle
     >
   `,
@@ -17,7 +17,7 @@ export class UnitToggleComponent implements OnInit {
   ngOnInit() {}
 
   onToggleMetric(isMetric): void {
-    const currentForecast: any = this.forecastService.forecastSubject.getValue();
+    const currentForecast: any = this.forecastService.forecast$.getValue();
     const { name } = currentForecast;
 
     this.forecastService.retrieveForecast(name, isMetric.checked);
